@@ -1,0 +1,18 @@
+.todo-list-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #1876d16b;
+    padding: 5px 10px;
+    border-radius: 8px;
+    transition: background 3s;
+    -webkit-transition: background 3s;
+    cursor: pointer;
+
+    > * {
+        margin-bottom: 10px;
+    }
+
+    &:hover {
+        background-color: #1876d1;
+    }
+}

@@ -1,0 +1,14 @@
+.todo-frm-container {
+    .todo-frm {
+        display: flex;
+        flex-direction: column;
+
+        > * {
+            margin-bottom: 10px;
+        }
+
+        .todo-frm__btns {
+            text-align: right;
+        }
+    }
+}
