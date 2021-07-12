@@ -50,7 +50,6 @@ export default class AddTodoItem extends Component {
 
     render() {
         const {title} = this.state;
-        const {success, error} = this.props;
 
         return (
             <div className="todo-frm-container">

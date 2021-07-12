@@ -1,4 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+
+import {firestore} from '../../utilities/firebase';
+
 import AddTodoItem from '../../components/addTodoItem/addTodoItem.component';
 import ListTodoItem from '../../components/listTodoItems/listTodoItem.component';
 
@@ -33,27 +36,69 @@ export default class Todo extends Component {
     }
 
     addItem = async (item) => {
-        const items = this.state.items;
-        console.log(item);
+        // const items = this.state.items;
 
-        this.setState({
-            items: [...items, item]
+        firestore.collection('todo').add({
+            title: item.title,
+            created_date: Date.now().toString()
+        }).then(docRef => {
+            // this.setState({
+            //     items: [...items, item]
+            // })
+            console.log("Item added successfully.");
+            console.log(docRef);
+        }).catch(error => {
+            this.setState({
+                error
+            })
         })
     }
 
     removeItem = (id) => {
+        const items = this.state.items;
 
+        this.setState({
+            items: items.filter(item => item.id !== id)
+        })
     }
 
     updateItem = (id, updatedItem) => {
 
     }
 
+    componentDidMount() {
+        firestore.collection('todo').onSnapshot(
+            snapshot => {
+                const items = [];
+
+                snapshot.forEach(doc => {
+                    const {title, description} = doc.data();
+                    items.push({
+                        id: doc.id,
+                        title,
+                        description
+                    });
+                });
+
+                this.setState({
+                    items
+                });
+            }
+        )
+    }
+
     render() {
+        const {success, error} = this.state;
         return (
             <div className="todo-page">
                 <div className="title">
                     <h2>TODO</h2>
+                </div>
+                <div className="msg">
+                    {
+                        error ? <div className="error">{error}</div> :
+                        success ? <div className="sucess">{success}</div> : null
+                    }
                 </div>
                 <div className="prose">
                     <div className="box">
